@@ -1,6 +1,6 @@
-import type { Artist, Track } from "../spotify";
+import type { Artist, Track } from '../spotify'
 
 export interface PopularDTO {
-		artists: Artist[];
-		tracks: Track[];
+  artists: Artist[]
+  tracks: Track[]
 }
