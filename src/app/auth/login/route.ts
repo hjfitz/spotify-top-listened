@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export async function GET() {
   const scopes = process.env.SPOTIFY_SCOPES?.replace(/;/g, ' ')
@@ -20,5 +21,5 @@ export async function GET() {
     `&state=${state}`,
   ].join('')
 
-  return Response.redirect(spotifyRedirect)
+  redirect(spotifyRedirect)
 }

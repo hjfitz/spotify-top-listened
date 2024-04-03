@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import queryString from 'querystring'
 import { cookies } from 'next/headers'
 import axios from 'axios'
+import { redirect } from 'next/navigation'
 
 interface RequestSuccess {
   access_token: string
@@ -74,5 +75,5 @@ export async function GET(req: NextRequest) {
     expires: new Date(Date.now() + data.expires_in * 1000),
   })
 
-  return Response.redirect(new URL('/', req.nextUrl))
+  redirect('/')
 }
