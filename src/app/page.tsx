@@ -89,7 +89,7 @@ const Page = () => {
               <RadioButton
                 onClick={setShort}
                 header="Short"
-                description="Tracks listened to in the last 4 weeks"
+                description="Top Tracks listened to in the last 4 weeks"
                 checked={viewRange === ViewRange.SHORT}
               />
             </li>
@@ -97,7 +97,7 @@ const Page = () => {
               <RadioButton
                 onClick={setMedium}
                 header="Medium"
-                description="Tracks listened to in the last 6 months"
+                description="Top Tracks listened to in the last 6 months"
                 checked={viewRange === ViewRange.MEDIUM}
               />
             </li>
@@ -105,7 +105,7 @@ const Page = () => {
               <RadioButton
                 onClick={setLong}
                 header="Long"
-                description="Tracks listened to over 6 months ago"
+                description="Top Tracks listened to in the last year"
                 checked={viewRange === ViewRange.LONG}
               />
             </li>
