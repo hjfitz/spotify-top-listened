@@ -113,7 +113,7 @@ const Page = () => {
         </div>
         <div className="grid sm:grid-cols-2 gap-10">
           {isLoading ? (
-            <div className="flex items-center justify-center h-screen">
+            <div className="flex items-center justify-center h-screen col-span-2">
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-card"></div>
             </div>
           ) : (
