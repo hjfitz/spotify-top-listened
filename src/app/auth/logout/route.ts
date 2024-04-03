@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers'
-import { NextRequest } from 'next/server'
+import { redirect } from 'next/navigation'
 
-export function GET(request: NextRequest) {
+export function GET() {
   const cookieStore = cookies()
 
   cookieStore.delete('token')
 
-  return Response.redirect(new URL('/logged_out', request.nextUrl))
+  redirect('/logged_out')
 }

@@ -4,6 +4,45 @@ import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import { PopularDTO, ViewRange } from '@/types'
 import { ArtistContainer, Button, TrackContainer } from '@/components'
+import axios from 'axios'
+
+interface RadioButtonProps {
+  onClick: () => void
+  header: string
+  description: string
+  checked?: boolean
+}
+
+const RadioButton = ({
+  onClick,
+  header,
+  description,
+  checked,
+}: RadioButtonProps) => {
+  return (
+    <>
+      <input
+        onClick={onClick}
+        type="radio"
+        id={header}
+        name="hosting"
+        value="hosting-small"
+        className="hidden peer"
+        checked={checked}
+        required
+      />
+      <label
+        htmlFor={header}
+        className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 h-full"
+      >
+        <div className="block">
+          <div className="w-full text-lg font-semibold">{header}</div>
+          <div className="w-full">{description}</div>
+        </div>
+      </label>
+    </>
+  )
+}
 
 const Page = () => {
   const [url, setUrl] = useState('/api/spotify/top')
@@ -15,10 +54,14 @@ const Page = () => {
   const setMedium = () => setViewRange(ViewRange.MEDIUM)
   const setLong = () => setViewRange(ViewRange.LONG)
 
+  const playResource = (id: string) => async () => {
+    await axios.put('/api/spotify/play?id=' + id)
+  }
+
   useEffect(() => {
     setUrl(`/api/spotify/top?term=${viewRange}`)
   }, [viewRange])
-
+  /*
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -26,6 +69,7 @@ const Page = () => {
       </div>
     )
   }
+  */
 
   if (error) {
     return (
@@ -47,11 +91,34 @@ const Page = () => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-4">
-          <p>View by:</p>
-          <Button onClick={setShort}>Short</Button>
-          <Button onClick={setMedium}>Medium</Button>
-          <Button onClick={setLong}>Long</Button>
+        <div className="grid grid-cols-2 gap-4">
+          <p className="col-span-1">View by:</p>
+          <ul className="grid w-full gap-6 md:grid-cols-3 col-span-3">
+            <li>
+              <RadioButton
+                onClick={setShort}
+                header="Short"
+                description="Tracks listened to in the last 4 weeks"
+                checked={viewRange === ViewRange.SHORT}
+              />
+            </li>
+            <li>
+              <RadioButton
+                onClick={setMedium}
+                header="Medium"
+                description="Tracks listened to in the last 6 months"
+                checked={viewRange === ViewRange.MEDIUM}
+              />
+            </li>
+            <li>
+              <RadioButton
+                onClick={setLong}
+                header="Long"
+                description="Tracks listened to over 6 months ago"
+                checked={viewRange === ViewRange.LONG}
+              />
+            </li>
+          </ul>
         </div>
         <div className="grid sm:grid-cols-2 gap-10">
           <div>
@@ -62,6 +129,7 @@ const Page = () => {
               {data!.tracks.map((track) => (
                 <TrackContainer
                   key={track.artistName + track.trackTitle}
+                  onClick={playResource(track.resourceId)}
                   {...track}
                 />
               ))}
@@ -73,7 +141,11 @@ const Page = () => {
             </header>
             <div className="grid gap-6 md:gap-8">
               {data!.artists.map((artist) => (
-                <ArtistContainer key={artist.artistName} {...artist} />
+                <ArtistContainer
+                  key={artist.artistName}
+                  {...artist}
+                  onClick={playResource(artist.resourceId)}
+                />
               ))}
             </div>
           </div>
@@ -82,24 +154,5 @@ const Page = () => {
     </section>
   )
 }
-
-const MusicIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M9 18V5l12-2v13" />
-    <circle cx="6" cy="18" r="3" />
-    <circle cx="18" cy="16" r="3" />
-  </svg>
-)
 
 export default Page

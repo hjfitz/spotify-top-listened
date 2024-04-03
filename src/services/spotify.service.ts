@@ -1,5 +1,11 @@
 import axios, { AxiosInstance } from 'axios'
-import type { Artist, TopArtistsDTO, TopTracksDTO, Track } from '@/types'
+import type {
+  Artist,
+  TopArtistsDTO,
+  TopTracksDTO,
+  Track,
+  QueueResponseDTO,
+} from '@/types'
 
 export class SpotifyService {
   private readonly axios: AxiosInstance
@@ -16,10 +22,12 @@ export class SpotifyService {
     const resp = await this.axios.get<TopArtistsDTO>(
       `/me/top/artists?time_range=${term}&limit=5`,
     )
+
     return resp.data.items.map((item) => ({
       thumbUrl: item.images[0].url,
       artistName: item.name,
       artistUrl: item.external_urls.spotify,
+      resourceId: item.uri,
     }))
   }
 
@@ -27,6 +35,7 @@ export class SpotifyService {
     const resp = await this.axios.get<TopTracksDTO>(
       `/me/top/tracks?time_range=${term}&limit=5`,
     )
+
     return resp.data.items.map((item) => ({
       trackTitle: item.name,
       artistName: item.artists.map((artist) => artist.name).join(', '),
@@ -34,10 +43,19 @@ export class SpotifyService {
       trackUrl: item.external_urls.spotify,
       previewUrl: item.preview_url,
       thumb: item.album.images[0].url,
+      resourceId: item.uri,
     }))
   }
 
-  public playTrack(id: string) {}
+  public async playArtist(id: string) {
+    await this.axios.put('/me/player/play', {
+      context_uri: id,
+    })
+  }
 
-  public playArtist(id: string) {}
+  public async playTrack(id: string) {
+    await this.axios.put('/me/player/play', {
+      uris: [id],
+    })
+  }
 }

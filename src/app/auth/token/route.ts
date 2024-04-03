@@ -3,21 +3,9 @@ import queryString from 'querystring'
 import { cookies } from 'next/headers'
 import axios from 'axios'
 import { redirect } from 'next/navigation'
+import { RequestFailureDTO, RequestSuccessDTO } from '@/types'
 
-interface RequestSuccess {
-  access_token: string
-  token_type: string
-  expires_in: number
-  refresh_token: string
-  scope: string
-}
-
-interface RequestFailure {
-  error: string
-  error_description: string
-}
-
-function isSuccessfulResponse(response: any): response is RequestSuccess {
+function isSuccessfulResponse(response: any): response is RequestSuccessDTO {
   return 'access_token' in response
 }
 
@@ -53,7 +41,7 @@ export async function GET(req: NextRequest) {
     grant_type: 'authorization_code',
   })
 
-  const { data } = await axios.post<RequestSuccess | RequestFailure>(
+  const { data } = await axios.post<RequestSuccessDTO | RequestFailureDTO>(
     'https://accounts.spotify.com/api/token',
     body,
     {

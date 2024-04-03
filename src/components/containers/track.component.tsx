@@ -1,13 +1,18 @@
-import { Track as TrackContainerProps } from '@/types'
+import { Track } from '@/types'
 import { Card } from '@/components'
+
+export interface TrackContainerProps extends Track {
+  onClick: () => void
+}
 
 export const TrackContainer = ({
   trackTitle,
   thumb,
   albumName,
   artistName,
+  onClick,
 }: TrackContainerProps) => (
-  <Card>
+  <Card onClick={onClick}>
     <img
       alt="Avatar"
       className="rounded-full aspect-square object-cover"

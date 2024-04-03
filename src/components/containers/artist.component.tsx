@@ -1,11 +1,16 @@
-import { Artist as ArtistContainerProps } from '@/types'
+import { Artist } from '@/types'
 import { Card } from '@/components'
+
+interface ArtistContainerProps extends Artist {
+  onClick: () => void
+}
 
 export const ArtistContainer = ({
   artistName,
   thumbUrl,
+  onClick,
 }: ArtistContainerProps) => (
-  <Card>
+  <Card onClick={onClick}>
     <img
       alt="Avatar"
       className="rounded-full aspect-square object-cover"

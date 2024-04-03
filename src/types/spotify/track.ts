@@ -4,4 +4,5 @@ export interface Track {
   trackTitle: string
   trackUrl: string
   thumb: string
+  resourceId: string
 }

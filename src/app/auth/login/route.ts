@@ -6,7 +6,6 @@ export async function GET() {
   const clientId = process.env.SPOTIFY_CLIENT_ID
   const redirectUri = process.env.SPOTIFY_REDIRECT_URI
 
-  // could be more random
   const state = Math.random().toString(36).substring(2)
 
   const cookieStore = cookies()
