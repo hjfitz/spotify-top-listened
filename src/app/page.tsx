@@ -61,15 +61,6 @@ const Page = () => {
   useEffect(() => {
     setUrl(`/api/spotify/top?term=${viewRange}`)
   }, [viewRange])
-  /*
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-card"></div>
-      </div>
-    )
-  }
-  */
 
   if (error) {
     return (
@@ -121,34 +112,42 @@ const Page = () => {
           </ul>
         </div>
         <div className="grid sm:grid-cols-2 gap-10">
-          <div>
-            <header>
-              <h2 className="text-lg font-semibold pb-4">Tracks</h2>
-            </header>
-            <div className="grid gap-6 md:gap-8">
-              {data!.tracks.map((track) => (
-                <TrackContainer
-                  key={track.artistName + track.trackTitle}
-                  onClick={playResource(track.resourceId)}
-                  {...track}
-                />
-              ))}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-screen">
+              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-card"></div>
             </div>
-          </div>
-          <div>
-            <header>
-              <h2 className="text-lg font-semibold pb-4">Artists</h2>
-            </header>
-            <div className="grid gap-6 md:gap-8">
-              {data!.artists.map((artist) => (
-                <ArtistContainer
-                  key={artist.artistName}
-                  {...artist}
-                  onClick={playResource(artist.resourceId)}
-                />
-              ))}
-            </div>
-          </div>
+          ) : (
+            <>
+              <div>
+                <header>
+                  <h2 className="text-lg font-semibold pb-4">Tracks</h2>
+                </header>
+                <div className="grid gap-6 md:gap-8">
+                  {data!.tracks.map((track) => (
+                    <TrackContainer
+                      key={track.artistName + track.trackTitle}
+                      onClick={playResource(track.resourceId)}
+                      {...track}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <header>
+                  <h2 className="text-lg font-semibold pb-4">Artists</h2>
+                </header>
+                <div className="grid gap-6 md:gap-8">
+                  {data!.artists.map((artist) => (
+                    <ArtistContainer
+                      key={artist.artistName}
+                      {...artist}
+                      onClick={playResource(artist.resourceId)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>

@@ -13,8 +13,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GB',
     url: 'https://spotify.hjf.io',
-    images: ['/opengraph.jpeg'],
+    images: '/opengraph.jpeg',
   },
+  metadataBase: new URL('https://spotify.hjf.io'),
 }
 
 export default function RootLayout({
